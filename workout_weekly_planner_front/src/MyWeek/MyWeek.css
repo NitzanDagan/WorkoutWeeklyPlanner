@@ -1,0 +1,53 @@
+.card-button {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  height: 75%;
+}
+
+.back-card {
+  background-color: #e5e5e5;
+  opacity: 0.5;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  font-size: 5rem;
+  height: 85%;
+}
+
+.card {
+  height: 200px;
+  margin-bottom: 20px;
+  font-size: 20px;
+}
+
+.card-content {
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  justify-content: space-between;
+}
+
+.transparent-background {
+  position: relative;
+  height: 85vh;
+  margin: 0 20px;
+  width: calc(100% + 40px);
+  margin-left: -20px;
+}
+
+.transparent-background:before {
+  content: "";
+  border-radius: 30px;
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background-image: url(https://media.self.com/photos/6398b36c72eb56f726777d06/4:3/w_2560%2Cc_limit/weekly-workout-schedule.jpeg);
+  background-repeat: no-repeat;
+  background-size: cover;
+  background-position: center;
+  opacity: 0.2;
+  z-index: -1;
+}

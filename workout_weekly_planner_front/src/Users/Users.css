@@ -1,0 +1,10 @@
+.background-image {
+  background-image: url("https://media.self.com/photos/6398b36c72eb56f726777d06/4:3/w_2560%2Cc_limit/weekly-workout-schedule.jpeg");
+  z-index: -1;
+  height: 100%;
+  width: 100%;
+  position: fixed;
+  top: 0;
+  background-position: 50%;
+  background-size: cover;
+}
