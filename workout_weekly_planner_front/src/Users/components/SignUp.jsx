@@ -11,7 +11,6 @@ import Typography from "@mui/material/Typography";
 import Container from "@mui/material/Container";
 import Copyright from "../../Page/Copyright";
 import "../Users.css";
-import { Place } from "@mui/icons-material";
 
 export default function SignUp() {
   const navigate = useNavigate();

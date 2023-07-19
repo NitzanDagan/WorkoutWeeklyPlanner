@@ -1,7 +1,13 @@
 import React, { useState } from "react";
-import { Select, MenuItem, InputLabel, FormControl } from "@mui/material";
+import {
+  Select,
+  MenuItem,
+  InputLabel,
+  FormControl,
+  Typography,
+} from "@mui/material";
 import "../MyWeek.css";
-export default function WeekForm({ setSelectedWorkout, setIsEmpty }) {
+export default function WeekForm({ setIsEmpty, handleWorkoutCount }) {
   const [workout, setWorkout] = useState("");
   const [menuItems, setMenuItems] = useState([]);
 
@@ -23,25 +29,47 @@ export default function WeekForm({ setSelectedWorkout, setIsEmpty }) {
 
   const handleWorkoutChange = (event) => {
     const selectedWorkout = event.target.value;
-    setWorkout(selectedWorkout);
-    setSelectedWorkout(selectedWorkout);
-    setIsEmpty(!selectedWorkout);
+    if (selectedWorkout !== workout) {
+      setWorkout(selectedWorkout);
+      setIsEmpty(!selectedWorkout);
+      handleWorkoutCount(selectedWorkout);
+    }
   };
-
   return (
-    <FormControl sx={{ m: 1, minWidth: 120 }}>
-      <InputLabel>Workout</InputLabel>
-      <Select
-        value={workout}
-        label="Choose workout"
-        onChange={handleWorkoutChange}
-      >
-        {menuItems.map((item) => (
-          <MenuItem key={item.value} value={item.value}>
-            {item.label}
-          </MenuItem>
-        ))}
-      </Select>
+    <FormControl
+      sx={{
+        m: 1,
+        width: "80%",
+      }}
+    >
+      {workout ? (
+        <Typography
+          sx={{
+            textAlign: "center",
+            color: "text.secondary",
+            fontFamily: "fantasy",
+            mt: 5,
+          }}
+          variant="h5"
+        >
+          {workout}
+        </Typography>
+      ) : (
+        <>
+          <InputLabel>Workout</InputLabel>
+          <Select
+            value={workout}
+            label="Choose workout"
+            onChange={handleWorkoutChange}
+          >
+            {menuItems.map((item) => (
+              <MenuItem key={item.value} value={item.value}>
+                {item.label}
+              </MenuItem>
+            ))}
+          </Select>
+        </>
+      )}
     </FormControl>
   );
 }

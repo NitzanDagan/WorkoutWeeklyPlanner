@@ -2,10 +2,12 @@ import React, { useState } from "react";
 import "../MyWeek.css";
 import Cards from "./Cards";
 import { Grid, Typography, Box } from "@mui/material";
-import { createTheme, ThemeProvider } from "@mui/material/styles";
 
 export default function WeekContainer() {
   const [selectedWorkout, setSelectedWorkout] = useState("");
+  const [selectedCount, setSelectedCount] = useState(0);
+  const [checkedCount, setCheckedCount] = useState(0);
+  const [closedCount, setClosedCount] = useState(0);
 
   const days = [
     { title: "Sunday" },
@@ -17,53 +19,78 @@ export default function WeekContainer() {
     { title: "Saturday" },
   ];
 
-  const defaultTheme = createTheme();
-  const [selectedWorkouts, setSelectedWorkouts] = useState({});
-  const handleSelectWorkout = (day, workout) => {
-    setSelectedWorkouts((prevSelectedWorkouts) => {
-      const updatedSelectedWorkouts = { ...prevSelectedWorkouts };
-      updatedSelectedWorkouts[day] = workout;
-      return updatedSelectedWorkouts;
-    });
+  const handleWorkoutCount = (selectedWorkout) => {
+    if (selectedWorkout) {
+      setSelectedCount((prevCount) => prevCount + 1);
+    }
+  };
+
+  const updateClosedCount = () => {
+    setClosedCount((prevCount) => prevCount + 1);
+  };
+
+  const updateCheckedCount = () => {
+    setCheckedCount((prevCount) => prevCount + 1);
   };
 
   return (
-    <ThemeProvider theme={defaultTheme}>
-      <Box
+    <Box
+      sx={{
+        display: "flex",
+        flexDirection: "column",
+        alignItems: "center",
+      }}
+    >
+      <Typography
+        component="h1"
+        variant="h5"
         sx={{
+          color: "text.secondary",
+          height: "10vh",
+          m: "20px",
           display: "flex",
-          flexDirection: "column",
           alignItems: "center",
         }}
       >
-        <Typography
-          component="h1"
-          variant="h5"
-          sx={{ color: "text.secondary", height: "10vh", mt: "20px" }}
+        My Week
+      </Typography>
+      <Box>
+        <Grid
+          container
+          spacing={4}
+          className="grid-container transparent-background"
+          justifyContent="center"
+          alignItems="center"
         >
-          My Week
-        </Typography>
-        <Box>
           <Grid
-            container
-            spacing={4}
-            className="grid-container transparent-background"
-            justifyContent="center"
-            alignItems="center"
+            sx={{
+              color: "text.secondary",
+              display: "flex",
+              justifyContent: "center",
+              textAlign: "center",
+            }}
+            xs={12}
           >
-            {days.map((card, index) => (
-              <Grid item xs={12} sm={6} md={1.5}>
-                <Cards
-                  data={card}
-                  selectedWorkout={selectedWorkouts[card.title]}
-                  onSelectWorkout={handleSelectWorkout}
-                  setSelectedWorkout={setSelectedWorkout}
-                />
-              </Grid>
-            ))}
+            <Typography variant="body" sx={{ lineHeight: "1.5" }}>
+              X, You scheduled {selectedCount} workouts this week <br />
+              Done: {checkedCount} - Canceled: {closedCount}
+            </Typography>
           </Grid>
-        </Box>
+          {days.map((card, index) => (
+            <Grid item xs={12} sm={6} md={1.5}>
+              <Cards
+                data={card}
+                setSelectedWorkout={setSelectedWorkout}
+                handleWorkoutCount={handleWorkoutCount}
+                checkedCount={checkedCount}
+                closedCount={closedCount}
+                updateClosedCount={updateClosedCount}
+                updateCheckedCount={updateCheckedCount}
+              />
+            </Grid>
+          ))}
+        </Grid>
       </Box>
-    </ThemeProvider>
+    </Box>
   );
 }

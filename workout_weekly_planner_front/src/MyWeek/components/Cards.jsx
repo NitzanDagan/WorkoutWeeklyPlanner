@@ -16,6 +16,11 @@ export default function Cards({
   data,
   selectedWorkout,
   setSelectedWorkout,
+  handleWorkoutCount,
+  checkedCount,
+  closedCount,
+  updateCheckedCount,
+  updateClosedCount,
 }) {
   const [isCloseMorning, setIsCloseMorning] = useState(false);
   const [isCloseEvening, setIsCloseEvening] = useState(false);
@@ -23,6 +28,7 @@ export default function Cards({
   const [isCheckEvening, setIsCheckEvening] = useState(false);
   const [isFormOpenMorning, setIsFormOpenMorning] = useState(false);
   const [isFormOpenEvening, setIsFormOpenEvening] = useState(false);
+
   const [isEmpty, setIsEmpty] = useState(true);
 
   useEffect(() => {
@@ -31,15 +37,19 @@ export default function Cards({
 
   const flipToCloseMorning = () => {
     setIsCloseMorning(!isCloseMorning);
+    updateClosedCount();
   };
   const flipToCheckMorning = () => {
     setIsCheckMorning(!isCheckMorning);
+    updateCheckedCount();
   };
   const flipToCloseEvening = () => {
     setIsCloseEvening(!isCloseEvening);
+    updateClosedCount();
   };
   const flipToCheckEvening = () => {
     setIsCheckEvening(!isCheckEvening);
+    updateCheckedCount();
   };
   const handleAddWorkoutMorning = () => {
     setIsFormOpenMorning(true);
@@ -53,6 +63,7 @@ export default function Cards({
       {isFormOpenMorning ? (
         <WeekForm
           setSelectedWorkout={setSelectedWorkout}
+          handleWorkoutCount={handleWorkoutCount}
           setIsEmpty={setIsEmpty}
         />
       ) : (
@@ -68,7 +79,6 @@ export default function Cards({
       )}
       {!isEmpty && (
         <CardContent className="card-content">
-          <Typography sx={{ mb: 1.5 }}>{selectedWorkout}</Typography>
           <CardActions sx={{ margin: "auto" }}>
             <SvgIcon
               component={Close}
@@ -91,6 +101,7 @@ export default function Cards({
       {isFormOpenEvening ? (
         <WeekForm
           setSelectedWorkout={setSelectedWorkout}
+          handleWorkoutCount={handleWorkoutCount}
           setIsEmpty={setIsEmpty}
         />
       ) : (
@@ -106,7 +117,6 @@ export default function Cards({
       )}
       {!isEmpty && (
         <CardContent className="card-content">
-          <Typography sx={{ mb: 1.5 }}>{selectedWorkout}</Typography>
           <CardActions sx={{ margin: "auto" }}>
             <SvgIcon
               component={Close}

@@ -35,10 +35,13 @@ export default function SignInSide() {
       const data = await response.json();
       if (data.message === "Sign in successful.") {
         setSuccess("Sign in successful!");
-        sessionStorage.setItem("token", data);
-        setTimeout(() => {
-          navigate("/homepage");
-        }, 1000);
+        // const storedToken = localStorage.getItem("token");
+        console.log(response);
+        // localStorage.setItem("token", JSON.stringify(data.token));
+        console.log(data.token);
+        // setTimeout(() => {
+        //   navigate("/homepage");
+        // }, 1000);
       } else {
         setError(data.message);
       }

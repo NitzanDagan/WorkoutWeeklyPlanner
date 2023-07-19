@@ -26,11 +26,12 @@
   flex-direction: row;
   align-items: center;
   justify-content: space-between;
+  cursor: pointer;
 }
 
 .transparent-background {
   position: relative;
-  height: 85vh;
+  height: 75vh;
   margin: 0 20px;
   width: calc(100% + 40px);
   margin-left: -20px;
@@ -50,4 +51,8 @@
   background-position: center;
   opacity: 0.2;
   z-index: -1;
+}
+
+.workout-typo {
+  text-align: center;
 }
