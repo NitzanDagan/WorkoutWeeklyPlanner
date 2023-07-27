@@ -3,9 +3,11 @@ const router = express.Router();
 const uuid = require("uuid");
 const User = require("../models/User");
 const bcrypt = require("bcrypt");
+const jwt = require("jsonwebtoken");
+const secretKey = "sdfj234FWRG@$%#23r";
 const { body, validationResult } = require("express-validator");
-
 const cors = require("cors");
+const { response } = require("express");
 router.use(express.json());
 router.use(cors());
 
@@ -19,6 +21,11 @@ router.get("/users", async (req, res) => {
     res.status(500).json({ message: "Can't find users" });
   }
 });
+
+// TOKEN
+function generateToken(userId) {
+  return jwt.sign({ userId }, secretKey, { expiresIn: "1h" });
+}
 
 // SIGN IN
 router.post(
@@ -50,7 +57,10 @@ router.post(
           .status(401)
           .json({ message: "Invalid password, please try again." });
       }
-      res.json({ message: "Sign in successful." });
+      const token = generateToken(user._id);
+      const userName = user.name;
+      res.json({ message: "Sign in successful.", token, userName, email });
+      console.log(token);
     } catch (error) {
       console.error(error);
       if (error.message.includes("email")) {
@@ -62,20 +72,35 @@ router.post(
   }
 );
 
-// router.get("/logout", (req, res) => {
-//   req.logout();
-//   res.redirect("/");
-// });
+function authenticateToken(req, res, next) {
+  const authHeader = req.headers["authorization"];
+  const token = authHeader && authHeader.split(" ")[1];
 
-//RETURN USER BY ID ????
-// router.get("/:id", (req, res) => {
-//   const found = users.some((user) => user.id === parseInt(req.params.id));
-//   if (found) {
-//     res.json(users.filter((user) => user.id === parseInt(req.params.id)));
-//   } else {
-//     res.status(400);
-//   }
-// });
+  if (token == null) {
+    return res.status(401).json({ message: "Unauthorized" });
+  }
+
+  jwt.verify(token, secretKey, (err, decodedToken) => {
+    if (err) {
+      console.error(err);
+      return res.status(403).json({ message: "Forbidden" });
+    }
+
+    req.userId = decodedToken.userId;
+    next();
+  });
+}
+
+// LOG OUT
+router.post("/logout", authenticateToken, (req, res) => {
+  req.session.destroy((err) => {
+    if (err) {
+      console.error(err);
+      return res.status(500).json({ message: "Failed to logout" });
+    }
+    res.json({ message: "Logout successful" });
+  });
+});
 
 //SIGN UP
 router.post("/register", async (req, res) => {
@@ -116,19 +141,19 @@ router.post("/register", async (req, res) => {
 });
 
 //EDIT USER ???
-router.put("/:id", (req, res) => {
-  const found = users.some((user) => user.id === parseInt(req.params.id));
-  if (found) {
-    const updateUser = req.body;
-    users.forEach((user) => {
-      if (user.id === parseInt(req.params.id)) {
-        user.name = updateUser.name ? updateUser.name : user.name;
-        user.email = updateUser.email ? updateUser.email : user.email;
-        res.json({ msg: "User updated:)", user });
-      }
-    });
-  }
-});
+// router.put("/:id", (req, res) => {
+//   const found = users.some((user) => user.id === parseInt(req.params.id));
+//   if (found) {
+//     const updateUser = req.body;
+//     users.forEach((user) => {
+//       if (user.id === parseInt(req.params.id)) {
+//         user.name = updateUser.name ? updateUser.name : user.name;
+//         user.email = updateUser.email ? updateUser.email : user.email;
+//         res.json({ msg: "User updated:)", user });
+//       }
+//     });
+//   }
+// });
 
 //DELETE USER ????
 // router.delete("/deleteUser", (req, res) => {

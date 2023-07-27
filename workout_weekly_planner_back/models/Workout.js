@@ -10,6 +10,9 @@ const WorkoutSchema = new mongoose.Schema(
     label: {
       type: String,
     },
+    calories: {
+      type: Number,
+    },
   },
   { timestamps: true }
 );

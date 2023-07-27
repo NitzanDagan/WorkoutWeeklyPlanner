@@ -22,6 +22,7 @@ app.use(express.json());
 app.use(express.urlencoded({ extended: false }));
 app.use("/routes/users", require("./routes/users"));
 app.use("/routes/workouts", require("./routes/workouts"));
+app.use("/routes/week", require("./routes/week"));
 
 app.listen(port, () => {
   console.log(`Server started on port ${port}`);
