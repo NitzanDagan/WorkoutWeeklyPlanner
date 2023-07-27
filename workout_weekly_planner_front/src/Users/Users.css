@@ -8,3 +8,9 @@
   background-position: 50%;
   background-size: cover;
 }
+
+.scroll-container {
+  max-height: 80vh;
+  overflow-y: auto;
+  margin-right: 5px;
+}

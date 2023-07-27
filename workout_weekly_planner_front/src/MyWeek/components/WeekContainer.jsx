@@ -4,7 +4,9 @@ import Cards from "./Cards";
 import { Grid, Typography, Box } from "@mui/material";
 
 export default function WeekContainer() {
+  const userName = localStorage.getItem("userName");
   const [selectedWorkout, setSelectedWorkout] = useState("");
+
   const [selectedCount, setSelectedCount] = useState(0);
   const [checkedCount, setCheckedCount] = useState(0);
   const [closedCount, setClosedCount] = useState(0);
@@ -54,6 +56,7 @@ export default function WeekContainer() {
       >
         My Week
       </Typography>
+
       <Box>
         <Grid
           container
@@ -71,12 +74,13 @@ export default function WeekContainer() {
             }}
             xs={12}
           >
-            <Typography variant="body" sx={{ lineHeight: "1.5" }}>
-              X, You scheduled {selectedCount} workouts this week <br />
-              Done: {checkedCount} - Canceled: {closedCount}
+            <Typography variant="body1" sx={{ lineHeight: "1.5" }}>
+              <b>{userName}</b>, You scheduled {selectedCount} workouts this
+              week <br />
+              Done: {checkedCount} 🏋️‍♂️ Canceled: {closedCount}
             </Typography>
           </Grid>
-          {days.map((card, index) => (
+          {days.map((card) => (
             <Grid item xs={12} sm={6} md={1.5}>
               <Cards
                 data={card}

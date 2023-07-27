@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import { useState, useEffect } from "react";
 import {
   Select,
   MenuItem,
@@ -7,23 +7,24 @@ import {
   Typography,
 } from "@mui/material";
 import "../MyWeek.css";
+
 export default function WeekForm({ setIsEmpty, handleWorkoutCount }) {
   const [workout, setWorkout] = useState("");
-  const [menuItems, setMenuItems] = useState([]);
+  const [workoutItems, setWorkoutItems] = useState([]);
 
-  React.useEffect(() => {
+  useEffect(() => {
     fetch("http://localhost:3006/routes/workouts/getWorkouts")
       .then((response) => {
         if (!response.ok) {
-          throw new Error("Error retrieving menuItems" + response.status);
+          throw new Error("Error retrieving workoutItems" + response.status);
         }
         return response.json();
       })
-      .then((menuItems) => {
-        setMenuItems(menuItems);
+      .then((workoutItems) => {
+        setWorkoutItems(workoutItems);
       })
       .catch((error) => {
-        console.error("Error retrieving menuItems:", error);
+        console.error("Error retrieving workoutItems:", error);
       });
   }, []);
 
@@ -35,6 +36,7 @@ export default function WeekForm({ setIsEmpty, handleWorkoutCount }) {
       handleWorkoutCount(selectedWorkout);
     }
   };
+
   return (
     <FormControl
       sx={{
@@ -55,20 +57,20 @@ export default function WeekForm({ setIsEmpty, handleWorkoutCount }) {
           {workout}
         </Typography>
       ) : (
-        <>
+        <FormControl>
           <InputLabel>Workout</InputLabel>
           <Select
             value={workout}
             label="Choose workout"
             onChange={handleWorkoutChange}
           >
-            {menuItems.map((item) => (
+            {workoutItems.map((item) => (
               <MenuItem key={item.value} value={item.value}>
                 {item.label}
               </MenuItem>
             ))}
           </Select>
-        </>
+        </FormControl>
       )}
     </FormControl>
   );

@@ -1,14 +1,16 @@
 import * as React from "react";
 import { Link, useNavigate } from "react-router-dom";
-import Avatar from "@mui/material/Avatar";
-import Button from "@mui/material/Button";
-import TextField from "@mui/material/TextField";
-import Grid from "@mui/material/Grid";
-import Box from "@mui/material/Box";
-import Alert from "@mui/material/Alert";
+import {
+  Avatar,
+  Button,
+  Alert,
+  TextField,
+  Box,
+  Grid,
+  Typography,
+  Container
+} from "@mui/material";
 import LockOutlinedIcon from "@mui/icons-material/LockOutlined";
-import Typography from "@mui/material/Typography";
-import Container from "@mui/material/Container";
 import Copyright from "../../Page/Copyright";
 import "../Users.css";
 
@@ -43,9 +45,10 @@ export default function SignUp() {
       if (response.ok) {
         setSuccess("Sign-up successful!");
         localStorage.setItem("user", JSON.stringify(newUser));
+        localStorage.setItem("userName", newUser.name);
         setTimeout(() => {
           navigate("/homepage");
-        }, 1000);
+        }, 1500);
       } else {
         const errorData = await response.json();
         throw new Error(errorData.message);
