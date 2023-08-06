@@ -120,7 +120,9 @@ router.post("/register", async (req, res) => {
       password,
     });
     const savedUser = await newUser.save();
-    res.json(savedUser);
+    res.json({ message: "Sign up successful.", savedUser });
+
+
   } catch (error) {
     console.error(error);
     if (error.errors && error.name === "ValidationError") {

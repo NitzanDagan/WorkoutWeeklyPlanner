@@ -1,6 +1,4 @@
 const mongoose = require("mongoose");
-// const validator = require("validator");
-// const bcrypt = require("bcrypt");
 
 const WorkoutSchema = new mongoose.Schema(
   {
@@ -13,6 +11,12 @@ const WorkoutSchema = new mongoose.Schema(
     calories: {
       type: Number,
     },
+    time: {
+      type: String,
+    },
+    duration: {
+      type: Number,
+    }
   },
   { timestamps: true }
 );
