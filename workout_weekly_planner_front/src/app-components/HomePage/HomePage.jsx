@@ -83,13 +83,18 @@ export default function HomePage() {
         </Grid>
         <Grid item xs={12} md={6} lg={6}>
           <Item>
-            <Typography variant="h6" sx={{ mb: 1 }}>
-              Summary & Statistics
-            </Typography>
-            <SvgIcon
-              component={BarChartOutlined}
-              sx={{ color: "#7a96ea", fontSize: 100 }}
-            />
+            <Link
+              to="/summarydialog"
+              style={{ textDecoration: "none", color: "inherit" }}
+            >
+              <Typography variant="h6" sx={{ mb: 1 }}>
+                Summary
+              </Typography>
+              <SvgIcon
+                component={BarChartOutlined}
+                sx={{ color: "#7a96ea", fontSize: 100 }}
+              />
+            </Link>
           </Item>
         </Grid>
         <Grid item xs={12} md={6} lg={6}>

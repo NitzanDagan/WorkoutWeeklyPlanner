@@ -11,14 +11,17 @@ import {
 } from "@mui/material";
 import { Done, Close, CloseSharp, CheckSharp } from "@mui/icons-material";
 import WeekForm from "./WeekForm";
+import { updateWorkouts } from "../../../services/MyWeek/updateWorkouts";
+
 
 export default function Cards({
-  data,
+  weekData,
+  day,
+  weekNumber,
+  userEmail,
   selectedWorkout,
   setSelectedWorkout,
   handleWorkoutCount,
-  checkedCount,
-  closedCount,
   updateCheckedCount,
   updateClosedCount,
 }) {
@@ -28,12 +31,32 @@ export default function Cards({
   const [isCheckEvening, setIsCheckEvening] = useState(false);
   const [isFormOpenMorning, setIsFormOpenMorning] = useState(false);
   const [isFormOpenEvening, setIsFormOpenEvening] = useState(false);
-
+  const [dbWorkoutsArray, setDbWorkoutsArray] = useState([]);
+  const [isWorkoutExist, setIsWorkoutExist] = useState(false);
   const [isEmpty, setIsEmpty] = useState(true);
 
   useEffect(() => {
-    setIsEmpty(!selectedWorkout);
-  }, [selectedWorkout]);
+    setIsEmpty(!selectedWorkout || !isWorkoutExist);
+  }, [selectedWorkout, isWorkoutExist]);
+
+  useEffect(() => {
+    if (weekData && weekData.length > 0) {
+      setDbWorkoutsArray(weekData[0].days);
+    }
+  }, [weekData]);
+
+  useEffect(() => {
+    checkIfWorkoutExist();
+  }, [dbWorkoutsArray]);
+
+  const checkIfWorkoutExist = () => {
+    const dayObject = weekData[0].days.find(
+      (item) => item.dayOfWeek === day.title
+    );
+    const workoutExists = dayObject && dayObject.workout.label;
+    setIsWorkoutExist(workoutExists);
+    console.log("Workout exists for " + day.title + ":", workoutExists);
+  };
 
   const flipToCloseMorning = () => {
     setIsCloseMorning(!isCloseMorning);
@@ -58,15 +81,24 @@ export default function Cards({
     setIsFormOpenEvening(true);
   };
 
+  const handleUpdateWorkout = (day, workout) => {
+    setSelectedWorkout(workout);
+
+    updateWorkouts({
+      weekNumber: weekNumber,
+      userEmail: userEmail,
+      days: [
+        {
+          dayOfWeek: day,
+          workout: workout,
+        },
+      ],
+    });
+  };
+
   const cardMorning = (
     <React.Fragment>
-      {isFormOpenMorning ? (
-        <WeekForm
-          setSelectedWorkout={setSelectedWorkout}
-          handleWorkoutCount={handleWorkoutCount}
-          setIsEmpty={setIsEmpty}
-        />
-      ) : (
+      {!isWorkoutExist && !isFormOpenMorning ? (
         <CardContent className="card-button">
           <Button
             variant="outlined"
@@ -76,6 +108,46 @@ export default function Cards({
             +
           </Button>
         </CardContent>
+      ) : isFormOpenMorning ? (
+        <WeekForm
+          // setSelectedWorkout={setSelectedWorkout}
+          handleWorkoutCount={handleWorkoutCount}
+          setIsEmpty={setIsEmpty}
+          day={day.title}
+          handleUpdateWorkout={handleUpdateWorkout}
+        />
+      ) : (
+        dbWorkoutsArray.find((item) => item.dayOfWeek === day.title)?.workout
+          ?.time === "morning" && (
+          <CardContent className="card-content">
+            <Typography
+              sx={{
+                textAlign: "center",
+                color: "text.secondary",
+                fontFamily: "fantasy",
+                mt: 5,
+              }}
+              variant="h5"
+            >
+              {
+                dbWorkoutsArray.find((item) => item.dayOfWeek === day.title)
+                  ?.workout?.label
+              }
+            </Typography>
+            <CardActions sx={{ margin: "auto" }}>
+              <SvgIcon
+                component={Close}
+                sx={{ color: "red", fontSize: 50 }}
+                onClick={flipToCloseMorning}
+              />
+              <SvgIcon
+                component={Done}
+                sx={{ color: "green", fontSize: 50 }}
+                onClick={flipToCheckMorning}
+              />
+            </CardActions>
+          </CardContent>
+        )
       )}
       {!isEmpty && (
         <CardContent className="card-content">
@@ -98,13 +170,7 @@ export default function Cards({
 
   const cardEvening = (
     <React.Fragment>
-      {isFormOpenEvening ? (
-        <WeekForm
-          setSelectedWorkout={setSelectedWorkout}
-          handleWorkoutCount={handleWorkoutCount}
-          setIsEmpty={setIsEmpty}
-        />
-      ) : (
+      {!isWorkoutExist && !isFormOpenEvening ? (
         <CardContent className="card-button">
           <Button
             variant="outlined"
@@ -114,6 +180,44 @@ export default function Cards({
             +
           </Button>
         </CardContent>
+      ) : isFormOpenEvening ? (
+        <WeekForm
+          setIsEmpty={setIsEmpty}
+          handleWorkoutCount={handleWorkoutCount}
+          setSelectedWorkout={setSelectedWorkout}
+        />
+      ) : (
+        dbWorkoutsArray.find((item) => item.dayOfWeek === day.title)?.workout
+          ?.time === "evening" && (
+          <CardContent className="card-content">
+            <Typography
+              sx={{
+                textAlign: "center",
+                color: "text.secondary",
+                fontFamily: "fantasy",
+                mt: 5,
+              }}
+              variant="h5"
+            >
+              {
+                dbWorkoutsArray.find((item) => item.dayOfWeek === day.title)
+                  ?.workout?.label
+              }
+            </Typography>
+            <CardActions sx={{ margin: "auto" }}>
+              <SvgIcon
+                component={Close}
+                sx={{ color: "red", fontSize: 50 }}
+                onClick={flipToCloseEvening}
+              />
+              <SvgIcon
+                component={Done}
+                sx={{ color: "green", fontSize: 50 }}
+                onClick={flipToCheckEvening}
+              />
+            </CardActions>
+          </CardContent>
+        )
       )}
       {!isEmpty && (
         <CardContent className="card-content">
@@ -157,12 +261,13 @@ export default function Cards({
         textAlign="center"
         gutterBottom
       >
-        {data.title}
+        {day.title}
       </Typography>
       <Card className="card">
         {isCloseMorning && !isCheckMorning && closedCard}
         {!isCloseMorning && isCheckMorning && checkedCard}
         {!isCloseMorning && !isCheckMorning && cardMorning}
+        {/* {!isCloseMorning && !isCheckMorning && cardData} */}
       </Card>
       <Card className="card">
         {isCloseEvening && !isCheckEvening && closedCard}

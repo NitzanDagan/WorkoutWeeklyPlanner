@@ -1,0 +1,20 @@
+.counts {
+  /* font-family: "cursive"; */
+  color: #7a96ea;
+}
+
+.transparent-background:before {
+  content: "";
+  border-radius: 30px;
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background-image: url(https://media.self.com/photos/6398b36c72eb56f726777d06/4:3/w_2560%2Cc_limit/weekly-workout-schedule.jpeg);
+  background-repeat: no-repeat;
+  background-size: cover;
+  background-position: center;
+  opacity: 0.2;
+  z-index: -1;
+}

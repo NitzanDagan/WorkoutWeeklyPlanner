@@ -1,5 +1,6 @@
 import * as React from "react";
 import { Link, useNavigate } from "react-router-dom";
+import { signUp } from "../../../services/Users/AuthUser";
 import {
   Avatar,
   Button,
@@ -8,7 +9,7 @@ import {
   Box,
   Grid,
   Typography,
-  Container
+  Container,
 } from "@mui/material";
 import LockOutlinedIcon from "@mui/icons-material/LockOutlined";
 import Copyright from "../../Page/Copyright";
@@ -30,19 +31,10 @@ export default function SignUp() {
       email: emailRef.current.value,
       password: passwordRef.current.value,
     };
-    try {
-      const response = await fetch(
-        "http://localhost:3006/routes/users/register",
-        {
-          method: "post",
-          headers: {
-            "Content-Type": "application/json",
-          },
-          body: JSON.stringify(newUser),
-        }
-      );
 
-      if (response.ok) {
+    try {
+      const data = await signUp(newUser);
+      if (data.message === "Sign up successful.") {
         setSuccess("Sign-up successful!");
         localStorage.setItem("user", JSON.stringify(newUser));
         localStorage.setItem("userName", newUser.name);
@@ -50,11 +42,9 @@ export default function SignUp() {
           navigate("/homepage");
         }, 1500);
       } else {
-        const errorData = await response.json();
-        throw new Error(errorData.message);
+        setError(data.message);
       }
     } catch (error) {
-      console.error(error);
       nameRef.current.value = "";
       emailRef.current.value = "";
       passwordRef.current.value = "";

@@ -8,7 +8,13 @@ import {
 } from "@mui/material";
 import "../MyWeek.css";
 
-export default function WeekForm({ setIsEmpty, handleWorkoutCount }) {
+export default function WeekForm({
+  setIsEmpty,
+  handleWorkoutCount,
+  // setSelectedWorkout,
+  day,
+  handleUpdateWorkout,
+}) {
   const [workout, setWorkout] = useState("");
   const [workoutItems, setWorkoutItems] = useState([]);
 
@@ -34,8 +40,10 @@ export default function WeekForm({ setIsEmpty, handleWorkoutCount }) {
       setWorkout(selectedWorkout);
       setIsEmpty(!selectedWorkout);
       handleWorkoutCount(selectedWorkout);
+      handleUpdateWorkout(day.title, selectedWorkout);
     }
   };
+
 
   return (
     <FormControl
