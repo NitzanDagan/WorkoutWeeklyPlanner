@@ -2,13 +2,11 @@ import React, { useContext, useState, useEffect } from "react";
 import "../MyWeek.css";
 import Cards from "./Cards";
 import { Grid, Typography, Box } from "@mui/material";
-import { WeekNumberContext } from "../../WorkoutWeeklyPlanner";
 import { FetchWeekData } from "../../../services/MyWeek/fetchWeekData";
 import { updateCounts } from "../../../services/MyWeek/updateCounts";
 
 export default function WeekContainer() {
-  const weekData = useContext(FetchWeekData);
-  const weekNumber = useContext(WeekNumberContext);
+  const { weekData, weekNumber } = useContext(FetchWeekData);
   const userEmail = localStorage.getItem("userEmail");
   const [selectedWorkout, setSelectedWorkout] = useState("");
   const [selectedCount, setSelectedCount] = useState(0);
@@ -43,7 +41,7 @@ export default function WeekContainer() {
       checkedCount,
       closedCount,
     });
-  }, [selectedCount, checkedCount, closedCount, weekNumber]);
+  }, [selectedCount, checkedCount, closedCount, weekNumber, userEmail]);
 
 
   const handleWorkoutCount = (selectedWorkout) => {
@@ -108,9 +106,9 @@ export default function WeekContainer() {
                   display="flex"
                   justifyContent="center"
                   alignItems="center"
-                  xs={12}
-                  sm={6}
-                  md={1.5}
+                  // xs={12}
+                  // sm={6}
+                  // md={1.5}
                   key={day.title}
                 >
                   <Cards

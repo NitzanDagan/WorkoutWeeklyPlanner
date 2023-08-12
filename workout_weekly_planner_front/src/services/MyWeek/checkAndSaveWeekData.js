@@ -1,9 +1,11 @@
+import { API_BASE_URL, API_ENDPOINTS } from "../apiConfing";
+
 export const checkAndSaveWeekData = async (userEmail, userName, weekNumber) => {
   try {
     const fetchData = async () => {
       try {
         const response = await fetch(
-          `http://localhost:3006/routes/week/getWeekData?userEmail=${userEmail}&weekNumber=${weekNumber}`
+          `${API_BASE_URL}${API_ENDPOINTS.week.fetchWeekData}?userEmail=${userEmail}&weekNumber=${weekNumber}`
         );
         if (response.ok) {
           const data = await response.json();
@@ -25,7 +27,7 @@ export const checkAndSaveWeekData = async (userEmail, userName, weekNumber) => {
     const saveWeekData = async () => {
       try {
         const response = await fetch(
-          "http://localhost:3006/routes/week/saveWeekData",
+          `${API_BASE_URL}${API_ENDPOINTS.week.saveWeekData}`,
           {
             method: "post",
             headers: {

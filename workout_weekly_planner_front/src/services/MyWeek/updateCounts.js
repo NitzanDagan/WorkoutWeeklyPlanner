@@ -1,3 +1,5 @@
+import { API_BASE_URL, API_ENDPOINTS } from "../apiConfing";
+
 export const updateCounts = async ({
   weekNumber,
   userEmail,
@@ -5,10 +7,16 @@ export const updateCounts = async ({
   checkedCount,
   closedCount,
 }) => {
-  if (weekNumber > 0 && userEmail && selectedCount > 0 && checkedCount > 0 && closedCount > 0) {
+  if (
+    weekNumber > 0 &&
+    userEmail &&
+    selectedCount > 0 &&
+    checkedCount > 0 &&
+    closedCount > 0
+  ) {
     try {
       const response = await fetch(
-        "http://localhost:3006/routes/week/updateCounts",
+        `${API_BASE_URL}${API_ENDPOINTS.week.updateCounts}`,
         {
           method: "post",
           headers: {

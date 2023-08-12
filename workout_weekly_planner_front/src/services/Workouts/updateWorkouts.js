@@ -1,3 +1,5 @@
+import { API_BASE_URL, API_ENDPOINTS } from "../apiConfing";
+
 export const updateWorkouts = async ({ weekNumber, userEmail, days }) => {
   if (weekNumber > 0 && userEmail && days.length > 0) {
     try {
@@ -7,7 +9,7 @@ export const updateWorkouts = async ({ weekNumber, userEmail, days }) => {
       }));
 
       const response = await fetch(
-        "http://localhost:3006/routes/week/updateWorkouts",
+        `${API_BASE_URL}${API_ENDPOINTS.week.updateWorkouts}`,
         {
           method: "post",
           headers: {

@@ -1,9 +1,10 @@
 import * as React from "react";
 import { Link, useNavigate } from "react-router-dom";
 // import CheckAndSaveWeekData from "../../MyWeek/components/CheckAndSaveWeekData";
-import { WeekNumberContext } from "../../WorkoutWeeklyPlanner";
 import { signIn } from "../../../services/Users/AuthUser";
 import { checkAndSaveWeekData } from "../../../services/MyWeek/checkAndSaveWeekData";
+import getWeekNumber from "../../../services/MyWeek/weekNumber";
+
 import {
   Avatar,
   Button,
@@ -25,7 +26,13 @@ export default function SignIn() {
   const [password, setPassword] = React.useState("");
   const [error, setError] = React.useState("");
   const [success, setSuccess] = React.useState("");
-  const weekNumber = React.useContext(WeekNumberContext);
+  const [weekNumber, setWeekNumber] = React.useState("");
+
+  React.useEffect(() => {
+    const currentDate = new Date();
+    const currentWeekNumber = getWeekNumber(currentDate);
+    setWeekNumber(currentWeekNumber);
+  }, []);
 
   const handleSubmit = async (event) => {
     event.preventDefault();

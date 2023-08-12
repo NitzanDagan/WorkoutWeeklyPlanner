@@ -1,23 +1,22 @@
 import { Card, CardContent, Typography, Grid } from "@mui/material";
 import React, { useState, useEffect } from "react";
+import { getUsers } from "../../../services/Users/getUsers";
 
 const UserList = () => {
   const [users, setUsers] = useState([]);
 
   useEffect(() => {
-    const fetchUsers = async () => {
+    const getUsersData = async () => {
       try {
-        const response = await fetch(
-          "http://localhost:3006/routes/users/users"
-        );
-        const data = await response.json();
+        const data = await getUsers();
         setUsers(data);
+        console.log(data);
       } catch (error) {
         console.error(error);
       }
     };
 
-    fetchUsers();
+    getUsersData();
   }, []);
 
   return (

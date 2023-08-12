@@ -1,12 +1,17 @@
+import { API_BASE_URL, API_ENDPOINTS } from "../apiConfing";
+
 export const signIn = async (email, password) => {
   try {
-    const response = await fetch("http://localhost:3006/routes/users/signin", {
-      method: "post",
-      headers: {
-        "Content-Type": "application/json",
-      },
-      body: JSON.stringify({ email, password }),
-    });
+    const response = await fetch(
+      `${API_BASE_URL}${API_ENDPOINTS.users.signIn}`,
+      {
+        method: "post",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify({ email, password }),
+      }
+    );
 
     if (response.ok) {
       const data = await response.json();
@@ -23,7 +28,7 @@ export const signIn = async (email, password) => {
 export const signUp = async (newUser) => {
   try {
     const response = await fetch(
-      "http://localhost:3006/routes/users/register",
+      `${API_BASE_URL}${API_ENDPOINTS.users.signUp}`,
       {
         method: "post",
         headers: {

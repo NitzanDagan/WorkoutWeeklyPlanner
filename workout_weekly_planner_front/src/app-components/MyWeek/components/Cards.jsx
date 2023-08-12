@@ -11,7 +11,7 @@ import {
 } from "@mui/material";
 import { Done, Close, CloseSharp, CheckSharp } from "@mui/icons-material";
 import WeekForm from "./WeekForm";
-import { updateWorkouts } from "../../../services/MyWeek/updateWorkouts";
+import { updateWorkouts } from "../../../services/Workouts/updateWorkouts";
 
 
 export default function Cards({
@@ -55,7 +55,6 @@ export default function Cards({
     );
     const workoutExists = dayObject && dayObject.workout.label;
     setIsWorkoutExist(workoutExists);
-    console.log("Workout exists for " + day.title + ":", workoutExists);
   };
 
   const flipToCloseMorning = () => {
@@ -267,7 +266,6 @@ export default function Cards({
         {isCloseMorning && !isCheckMorning && closedCard}
         {!isCloseMorning && isCheckMorning && checkedCard}
         {!isCloseMorning && !isCheckMorning && cardMorning}
-        {/* {!isCloseMorning && !isCheckMorning && cardData} */}
       </Card>
       <Card className="card">
         {isCloseEvening && !isCheckEvening && closedCard}

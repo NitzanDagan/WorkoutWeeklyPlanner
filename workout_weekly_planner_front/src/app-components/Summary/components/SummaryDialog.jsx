@@ -1,12 +1,9 @@
 import React, { useContext } from "react";
 import { Box, Grid, Typography } from "@mui/material";
-import { WeekNumberContext } from "../../WorkoutWeeklyPlanner";
 import { FetchWeekData } from "../../../services/MyWeek/fetchWeekData";
 
 const WeekSummary = () => {
-  const weekNumber = useContext(WeekNumberContext);
-  const weekData = useContext(FetchWeekData);
-  console.log(weekData);
+  const { weekData, weekNumber } = useContext(FetchWeekData);
   // const calories = weekData[0]?.calories;
   // console.log(weekData[0]?.calories);
   // const userEmail = localStorage.getItem("userEmail");
