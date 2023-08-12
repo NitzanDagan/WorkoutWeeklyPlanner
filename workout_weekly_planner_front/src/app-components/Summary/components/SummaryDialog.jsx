@@ -4,50 +4,6 @@ import { FetchWeekData } from "../../../services/MyWeek/fetchWeekData";
 
 const WeekSummary = () => {
   const { weekData, weekNumber } = useContext(FetchWeekData);
-  // const calories = weekData[0]?.calories;
-  // console.log(weekData[0]?.calories);
-  // const userEmail = localStorage.getItem("userEmail");
-  // const [dataExists, setDataExists] = useState(false);
-  // const [dataFetched, setDataFetched] = useState(false);
-  // const [calories, setCalories] = useState(0);
-  // const [selectedCount, setSelectedCount] = useState(0);
-  // const [checkedCount, setCheckedCount] = useState(0);
-  // const [closedCount, setClosedCount] = useState(0);
-
-  // useEffect(() => {
-  //   const fetchData = async () => {
-  //     try {
-  //       const response = await fetch(
-  //         `http://localhost:3006/routes/week/getWeekData?userEmail=${userEmail}&weekNumber=${weekNumber}`
-  //       );
-  //       const data = await response.json();
-  //       const dataExists = data.some(
-  //         (item) =>
-  //           item.userEmail === userEmail && item.weekNumber === weekNumber
-  //       );
-  //       setDataExists(dataExists);
-  //       setDataFetched(true);
-  //       if (dataExists) {
-  //         const weekData = data.find(
-  //           (item) =>
-  //             item.userEmail === userEmail && item.weekNumber === weekNumber
-  //         );
-  //         setSelectedCount(weekData.selectedCount);
-  //         console.log(weekData.selectedCount);
-  //         setCheckedCount(weekData.checkedCount);
-  //         setClosedCount(weekData.closedCount);
-  //         console.log(weekData);
-  //       }
-  //     } catch (error) {
-  //       console.error(error);
-  //     }
-  //   };
-
-  //   if (weekNumber > 0 && userEmail && !dataFetched) {
-  //     fetchData();
-  //   }
-  // }, [userEmail, weekNumber, dataFetched]);
-
   return (
     <>
       {weekData ? (

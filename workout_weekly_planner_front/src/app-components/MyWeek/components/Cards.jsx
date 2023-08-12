@@ -11,8 +11,7 @@ import {
 } from "@mui/material";
 import { Done, Close, CloseSharp, CheckSharp } from "@mui/icons-material";
 import WeekForm from "./WeekForm";
-import { updateWorkouts } from "../../../services/Workouts/updateWorkouts";
-
+import { updateWorkouts } from "../../../services/MyWeek/updateWorkouts";
 
 export default function Cards({
   weekData,
@@ -80,8 +79,16 @@ export default function Cards({
     setIsFormOpenEvening(true);
   };
 
-  const handleUpdateWorkout = (day, workout) => {
-    setSelectedWorkout(workout);
+
+  const handleUpdateWorkout = (day, selectedWorkout, workoutTime) => {
+    setSelectedWorkout(selectedWorkout);
+    console.log("this calleds?", day, selectedWorkout, workoutTime);
+
+    const workoutObject = {
+      label: selectedWorkout,
+      time: workoutTime,
+    }
+    console.log("object:", workoutObject)
 
     updateWorkouts({
       weekNumber: weekNumber,
@@ -89,7 +96,7 @@ export default function Cards({
       days: [
         {
           dayOfWeek: day,
-          workout: workout,
+          workout: workoutObject,
         },
       ],
     });
@@ -109,11 +116,11 @@ export default function Cards({
         </CardContent>
       ) : isFormOpenMorning ? (
         <WeekForm
-          // setSelectedWorkout={setSelectedWorkout}
           handleWorkoutCount={handleWorkoutCount}
           setIsEmpty={setIsEmpty}
           day={day.title}
           handleUpdateWorkout={handleUpdateWorkout}
+          workoutTime="morning"
         />
       ) : (
         dbWorkoutsArray.find((item) => item.dayOfWeek === day.title)?.workout
@@ -181,9 +188,11 @@ export default function Cards({
         </CardContent>
       ) : isFormOpenEvening ? (
         <WeekForm
-          setIsEmpty={setIsEmpty}
-          handleWorkoutCount={handleWorkoutCount}
-          setSelectedWorkout={setSelectedWorkout}
+        handleWorkoutCount={handleWorkoutCount}
+        setIsEmpty={setIsEmpty}
+        day={day.title}
+        handleUpdateWorkout={handleUpdateWorkout}
+        workoutTime="evening"
         />
       ) : (
         dbWorkoutsArray.find((item) => item.dayOfWeek === day.title)?.workout

@@ -7,6 +7,7 @@ import {
 } from "@mui/material";
 import { Logout, Home } from "@mui/icons-material";
 import { Link, useNavigate, useLocation } from "react-router-dom";
+import { API_BASE_URL, API_ENDPOINTS } from "../../services/apiConfing";
 
 export default function NavBar() {
   const location = useLocation();
@@ -23,13 +24,16 @@ export default function NavBar() {
 
   const handleLogout = async () => {
     const accessToken = localStorage.getItem("accessToken");
-    const response = await fetch("http://localhost:3006/routes/users/logout", {
-      method: "post",
-      headers: {
-        "Content-Type": "application/json",
-        Authorization: `Bearer ${accessToken}`,
-      },
-    });
+    const response = await fetch(
+      `${API_BASE_URL}${API_ENDPOINTS.users.logout}`,
+      {
+        method: "post",
+        headers: {
+          "Content-Type": "application/json",
+          Authorization: `Bearer ${accessToken}`,
+        },
+      }
+    );
     if (response) {
       localStorage.clear();
       navigate("/");
@@ -60,7 +64,7 @@ export default function NavBar() {
           onClick={handleLogout}
         />
         <BottomNavigationAction
-          icon={<Avatar sx={{ bgcolor: '#b042ff' }}>{initials}</Avatar>}
+          icon={<Avatar sx={{ bgcolor: "#b042ff" }}>{initials}</Avatar>}
           component={Link}
           to="/userslist"
         />

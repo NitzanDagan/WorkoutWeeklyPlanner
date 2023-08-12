@@ -1,4 +1,5 @@
 import { useState, useEffect } from "react";
+import { API_BASE_URL, API_ENDPOINTS } from "../../../services/apiConfing";
 import {
   Select,
   MenuItem,
@@ -9,17 +10,17 @@ import {
 import "../MyWeek.css";
 
 export default function WeekForm({
-  setIsEmpty,
   handleWorkoutCount,
-  // setSelectedWorkout,
+  setIsEmpty,
   day,
   handleUpdateWorkout,
+  workoutTime,
 }) {
   const [workout, setWorkout] = useState("");
   const [workoutItems, setWorkoutItems] = useState([]);
 
   useEffect(() => {
-    fetch("http://localhost:3006/routes/workouts/getWorkouts")
+    fetch(`${API_BASE_URL}${API_ENDPOINTS.workouts.getWorkouts}`)
       .then((response) => {
         if (!response.ok) {
           throw new Error("Error retrieving workoutItems" + response.status);
@@ -37,13 +38,13 @@ export default function WeekForm({
   const handleWorkoutChange = (event) => {
     const selectedWorkout = event.target.value;
     if (selectedWorkout !== workout) {
+      console.log("Im in the chnage", day, selectedWorkout, workoutTime);
       setWorkout(selectedWorkout);
       setIsEmpty(!selectedWorkout);
       handleWorkoutCount(selectedWorkout);
-      handleUpdateWorkout(day.title, selectedWorkout);
+      handleUpdateWorkout(day, selectedWorkout, workoutTime);
     }
   };
-
 
   return (
     <FormControl

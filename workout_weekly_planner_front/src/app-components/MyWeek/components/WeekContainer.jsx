@@ -106,9 +106,9 @@ export default function WeekContainer() {
                   display="flex"
                   justifyContent="center"
                   alignItems="center"
-                  // xs={12}
-                  // sm={6}
-                  // md={1.5}
+                  xs={12}
+                  sm={6}
+                  md={1.6}
                   key={day.title}
                 >
                   <Cards

@@ -1,6 +1,5 @@
 import * as React from "react";
 import { Link, useNavigate } from "react-router-dom";
-// import CheckAndSaveWeekData from "../../MyWeek/components/CheckAndSaveWeekData";
 import { signIn } from "../../../services/Users/AuthUser";
 import { checkAndSaveWeekData } from "../../../services/MyWeek/checkAndSaveWeekData";
 import getWeekNumber from "../../../services/MyWeek/weekNumber";
@@ -46,7 +45,7 @@ export default function SignIn() {
         if (weekNumber > 0) {
           setSuccess("Sign in successful!");
           setTimeout(() => {
-            // navigate("/homepage");
+            navigate("/homepage");
           }, 1500);
           await checkAndSaveWeekData(data.email, data.userName, weekNumber);
         }
