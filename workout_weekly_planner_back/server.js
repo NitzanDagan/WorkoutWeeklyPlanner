@@ -1,12 +1,12 @@
+require("dotenv").config();
 const express = require("express");
 const app = express();
-const port = 3006; /// env ??
+const port = process.env.PORT;
 const cors = require("cors");
 const mongoose = require("mongoose");
 const bcrypt = require("bcrypt");
 
-const uri =
-  "mongodb+srv://nitzan1040:nitz1234@workoutapp.9mchw9a.mongodb.net/?retryWrites=true&w=majority";
+const uri = process.env.MONGODB_URI;
 
 async function connectMongoDB() {
   try {

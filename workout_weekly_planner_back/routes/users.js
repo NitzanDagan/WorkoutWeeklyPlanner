@@ -4,7 +4,7 @@ const uuid = require("uuid");
 const User = require("../models/User");
 const bcrypt = require("bcrypt");
 const jwt = require("jsonwebtoken");
-const secretKey = "sdfj234FWRG@$%#23r";
+const secretKey = process.env.JWT_SECRET;
 const { body, validationResult } = require("express-validator");
 const cors = require("cors");
 const { response } = require("express");
@@ -12,7 +12,7 @@ router.use(express.json());
 router.use(cors());
 
 //RETURN ALL USERS
-router.get("/users", async (req, res) => {
+router.get("/getUsers", async (req, res) => {
   try {
     const users = await User.find();
     res.json(users);
@@ -133,7 +133,6 @@ router.post("/register", async (req, res) => {
     } else if (error.code === 11000 && error.keyValue) {
       const fieldName = Object.keys(error.keyPattern)[0];
       const duplicatedValue = Object.values(error.keyValue)[0];
-      console.log(Object.keys(error.keyValue)[0]);
       const errorMessage = `Duplicate key error: Field ${fieldName} with value ${duplicatedValue} already exists.`;
       res.status(400).json({ message: errorMessage });
     } else {

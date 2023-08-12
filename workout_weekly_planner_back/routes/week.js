@@ -9,7 +9,6 @@ router.post("/saveWeekData", async (req, res) => {
     const dayOfWeekEnum = weekSchema
       .path("days")
       .schema.path("dayOfWeek").enumValues;
-    console.log(req.body);
     const days = dayOfWeekEnum.map((day) => ({
       dayOfWeek: day,
       workout: { label: "", time: "", duration: "" },
@@ -47,7 +46,6 @@ router.get("/getWeekData", async (req, res) => {
     }
 
     res.json(myWeek);
-    console.log(myWeek);
   } catch (error) {
     console.error(error);
     res.status(500).json({ message: "Can't find weeks" });
@@ -72,7 +70,6 @@ router.post("/updateCounts", async (req, res) => {
     weekData.selectedCount = selectedCount;
     weekData.checkedCount = checkedCount;
     weekData.closedCount = closedCount;
-    console.log(weekData);
     await weekData.save();
     return res.status(200).json({ message: "Counts updated successfully" });
   } catch (error) {
@@ -110,7 +107,6 @@ router.post("/updateWorkouts", async (req, res) => {
       }
     }
 
-    console.log(weekData);
     await weekData.save();
     return res.status(200).json({ message: "Workouts updated successfully" });
   } catch (error) {
