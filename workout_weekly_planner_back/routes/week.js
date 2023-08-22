@@ -95,11 +95,13 @@ router.post("/updateWorkouts", async (req, res) => {
         if (existingWorkout && existingWorkout.label === workout.label) {
           existingWorkout.time = workout.time;
           existingWorkout.duration = workout.duration;
+          existingWorkout.status = workout.status;
         } else {
           existingDay.workout = {
-            label: workout.label, 
+            label: workout.label,
             time: workout.time,
             duration: workout.duration,
+            status: workout.status,
           };
         }
       } else {
