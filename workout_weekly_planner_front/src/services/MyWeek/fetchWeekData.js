@@ -29,6 +29,7 @@ const DataProvider = ({ children }) => {
   const dataContextValue = {
     weekData,
     weekNumber,
+    userEmail,
   };
   return (
     <FetchWeekData.Provider value={dataContextValue}>

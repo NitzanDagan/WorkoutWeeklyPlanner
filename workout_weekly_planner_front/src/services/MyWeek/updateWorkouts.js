@@ -10,6 +10,7 @@ export const updateWorkouts = async ({ weekNumber, userEmail, days }) => {
           ? {
               label: workout.label,
               time: workout.time,
+              status: workout.status,
               duration: "0",
             }
           : null,

@@ -7,14 +7,16 @@ export const updateCounts = async ({
   checkedCount,
   closedCount,
 }) => {
+  console.log(selectedCount, closedCount, checkedCount);
   if (
     weekNumber > 0 &&
-    userEmail &&
-    selectedCount > 0 &&
-    checkedCount > 0 &&
-    closedCount > 0
+    userEmail
+    // selectedCount > 0 &&
+    // checkedCount > 0 &&
+    // closedCount > 0
   ) {
     try {
+      console.log("im here");
       const response = await fetch(
         `${API_BASE_URL}${API_ENDPOINTS.week.updateCounts}`,
         {
