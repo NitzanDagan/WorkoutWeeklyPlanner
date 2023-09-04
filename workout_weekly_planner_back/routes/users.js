@@ -60,7 +60,6 @@ router.post(
       const token = generateToken(user._id);
       const userName = user.name;
       res.json({ message: "Sign in successful.", token, userName, email });
-      console.log(token);
     } catch (error) {
       console.error(error);
       if (error.message.includes("email")) {
@@ -92,15 +91,15 @@ function authenticateToken(req, res, next) {
 }
 
 // LOG OUT
-router.post("/logout", authenticateToken, (req, res) => {
-  req.session.destroy((err) => {
-    if (err) {
-      console.error(err);
-      return res.status(500).json({ message: "Failed to logout" });
-    }
-    res.json({ message: "Logout successful" });
-  });
-});
+// router.post("/logout", authenticateToken, (req, res) => {
+//   req.session.destroy((err) => {
+//     if (err) {
+//       console.error(err);
+//       return res.status(500).json({ message: "Failed to logout" });
+//     }
+//     res.json({ message: "Logout successful" });
+//   });
+// });
 
 //SIGN UP
 router.post("/register", async (req, res) => {

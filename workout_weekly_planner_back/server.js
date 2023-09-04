@@ -4,7 +4,6 @@ const app = express();
 const port = process.env.PORT;
 const cors = require("cors");
 const mongoose = require("mongoose");
-const bcrypt = require("bcrypt");
 
 const uri = process.env.MONGODB_URI;
 

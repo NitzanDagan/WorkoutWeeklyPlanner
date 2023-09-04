@@ -1,6 +1,7 @@
 const express = require("express");
 const router = express.Router();
 const Week = require("../models/Week");
+const Workout = require("../models/Workout");
 
 router.post("/saveWeekData", async (req, res) => {
   try {
@@ -54,19 +55,12 @@ router.get("/getWeekData", async (req, res) => {
 
 router.post("/updateCounts", async (req, res) => {
   try {
-    const {
-      weekNumber,
-      userEmail,
-      // days,
-      checkedCount,
-      closedCount,
-      selectedCount,
-    } = req.body;
+    const { weekNumber, userEmail, checkedCount, closedCount, selectedCount } =
+      req.body;
     const weekData = await Week.findOne({ weekNumber, userEmail });
     if (!weekData) {
       return res.status(404).json({ message: "User not found" });
     }
-    // weekData.days = days;
     weekData.selectedCount = selectedCount;
     weekData.checkedCount = checkedCount;
     weekData.closedCount = closedCount;
@@ -85,6 +79,8 @@ router.post("/updateWorkouts", async (req, res) => {
     if (!weekData) {
       return res.status(404).json({ message: "User not found" });
     }
+    let totalCalories = 0;
+
     for (const day of days) {
       const { dayOfWeek, workout } = day;
       const existingDay = weekData.days.find(
@@ -104,11 +100,24 @@ router.post("/updateWorkouts", async (req, res) => {
             status: workout.status,
           };
         }
+
+        if (workout.duration && workout.duration > 0) {
+          const workoutDetails = await Workout.findOne({
+            label: workout.label,
+          });
+
+          if (workoutDetails) {
+            const caloriesPerMinute = workoutDetails.calories;
+            const workoutCalories = caloriesPerMinute * workout.duration;
+            totalCalories += workoutCalories;
+          }
+        }
       } else {
         weekData.days.push({ dayOfWeek, workout });
       }
     }
-
+    weekData.calories = totalCalories;
+    console.log(weekData);
     await weekData.save();
     return res.status(200).json({ message: "Workouts updated successfully" });
   } catch (error) {

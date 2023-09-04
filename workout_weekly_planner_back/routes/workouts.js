@@ -6,6 +6,7 @@ router.get("/getWorkouts", async (req, res) => {
   try {
     const workouts = await Workout.find();
     res.json(workouts);
+    return workouts;
   } catch (error) {
     console.error(error);
     res.status(500).json({ message: "Can't find workouts" });
