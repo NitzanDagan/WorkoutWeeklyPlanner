@@ -4,6 +4,7 @@ import { FetchWeekData } from "../../../services/MyWeek/fetchWeekData";
 
 const WeekSummary = () => {
   const { weekData, weekNumber } = useContext(FetchWeekData);
+
   return (
     <>
       {weekData ? (
@@ -81,7 +82,7 @@ const WeekSummary = () => {
                 {weekData[0]?.checkedCount}
               </Typography>
               <Typography sx={{ color: "text.secondary" }} variant="body1">
-                Workouts done{" "}
+                Workouts done
               </Typography>
             </Grid>
             <Grid item xs={12} md={3} lg={3}>

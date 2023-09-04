@@ -57,7 +57,7 @@ export default function HomePage() {
             }}
           >
             <Link
-              to="/workouttable1"
+              to="/workouttable"
               style={{ textDecoration: "none", color: "inherit" }}
             >
               <Typography variant="h6" sx={{ mb: 1 }}>

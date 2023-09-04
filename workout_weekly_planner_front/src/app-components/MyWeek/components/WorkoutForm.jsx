@@ -4,7 +4,7 @@ import "../MyWeek.css";
 import { handleWorkoutChange } from "../functions/workoutFunctions";
 import { workoutsList } from "../../../services/Workouts/workoutsList";
 
-export default function WeekForm1({
+export default function WorkoutForm({
   day,
   handleUpdateWorkout,
   updateSelectedCount,

@@ -10,7 +10,6 @@ const UserList = () => {
       try {
         const data = await getUsers();
         setUsers(data);
-        console.log(data);
       } catch (error) {
         console.error(error);
       }

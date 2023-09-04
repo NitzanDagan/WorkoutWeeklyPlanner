@@ -9,12 +9,18 @@ import {
   Box,
   Button,
 } from "@mui/material";
-import { Done, Close, CloseSharp, CheckSharp } from "@mui/icons-material";
-import WeekForm1 from "./WeekForm1";
+import {
+  Done,
+  Close,
+  CloseSharp,
+  CheckSharp,
+} from "@mui/icons-material";
+import WorkoutForm from "./WorkoutForm";
 import { updateWorkouts } from "../../../services/MyWeek/updateWorkouts";
+import DurationPopover from "./DurationPopover";
 
-const WorkoutItem1 = ({
-  workout,
+const WorkoutItem = ({
+  workout: initialWorkout,
   day,
   weekNumber,
   userEmail,
@@ -26,26 +32,44 @@ const WorkoutItem1 = ({
   const [isClosedCard, setIsClosedCard] = useState(false);
   const [isCheckedCard, setIsCheckedCard] = useState(false);
   const [selectedWorkout, setSelectedWorkout] = useState("");
+  const [anchorEl, setAnchorEl] = useState(null);
+  const [workoutDuration, setWorkoutDuration] = useState("");
+  const [showEmptyCard, setShowEmptyCard] = useState(false);
+  const workout = selectedWorkout || initialWorkout;
 
-  // const [showEmptyCard, setShowEmptyCard] = useState(false);
+  const open = Boolean(anchorEl);
+  const id = open ? "popover-form" : undefined;
 
-  const handleUpdateWorkout = (day, selectedWorkout, status) => {
-    // setShowEmptyCard(true);
-
-    const workoutObject = {
-      label: selectedWorkout,
-      status: status,
+  const handleUpdateWorkout = (day, selectedWorkout, options) => {
+    const updateWorkout = {
+      ...options,
     };
+    if (!selectedWorkout.label) {
+      updateWorkout.label = selectedWorkout;
+    }
     updateWorkouts({
       weekNumber: weekNumber,
       userEmail: userEmail,
       days: [
         {
           dayOfWeek: day,
-          workout: workoutObject,
+          workout: updateWorkout,
         },
       ],
     });
+    setShowEmptyCard(true);
+  };
+
+  const flipStatus = (day, selectedWorkout, status) => {
+    handleUpdateWorkout(day, selectedWorkout, { status: status });
+    if (status === "close") {
+      setIsClosedCard(true);
+      updateClosedCount();
+    } else {
+      setIsCheckedCard(true);
+      updateCheckedCount();
+      setAnchorEl(true);
+    }
   };
 
   const closedCard = (
@@ -75,10 +99,6 @@ const WorkoutItem1 = ({
       >
         {workout.label || selectedWorkout}
       </Typography>
-      {/* <p>Calories: {workout.calories}</p>
-      <p>Time: {workout.time}</p>
-      <p>Duration: {workout.duration} mins</p>
-      <p>Status: {workout.status}</p> */}
       <CardActions sx={{ margin: "auto" }}>
         <SvgIcon
           component={Close}
@@ -87,10 +107,24 @@ const WorkoutItem1 = ({
         />
         <SvgIcon
           component={Done}
+          variant="contained"
+          aria-describedby={id}
           sx={{ color: "green", fontSize: 50 }}
-          onClick={() => flipStatus(day, workout, "check")}
+          onClick={(event) => {
+            flipStatus(day, workout, "check");
+            setAnchorEl(event.currentTarget);
+          }}
         />
       </CardActions>
+
+      <DurationPopover
+        open={open}
+        anchorEl={anchorEl}
+        handleClosePopover={() => setAnchorEl(null)}
+        handleUpdateWorkout={handleUpdateWorkout}
+        day={day}
+        selectedWorkout={selectedWorkout}
+      />
     </CardContent>
   );
 
@@ -105,17 +139,6 @@ const WorkoutItem1 = ({
       </Button>
     </CardContent>
   );
-
-  const flipStatus = (day, selectedWorkout, status) => {
-    handleUpdateWorkout(day, selectedWorkout.label, status);
-    if (status === "close") {
-      setIsClosedCard(true);
-      updateClosedCount();
-    } else {
-      setIsCheckedCard(true);
-      updateCheckedCount();
-    }
-  };
 
   return (
     <Box sx={{ minWidth: 160 }}>
@@ -133,10 +156,10 @@ const WorkoutItem1 = ({
         {workout.status === "check" && checkedCard}
         {isCheckedCard ? checkedCard : null}
         {isClosedCard ? closedCard : null}
-        {(workout.label || selectedWorkout) &&  existCard}
+        {(workout.label || selectedWorkout) && existCard}
         {!workout.label && !isFormOpen && !selectedWorkout && emptyCard}
         {isFormOpen && !selectedWorkout && (
-          <WeekForm1
+          <WorkoutForm
             day={day}
             handleUpdateWorkout={handleUpdateWorkout}
             updateSelectedCount={updateSelectedCount}
@@ -144,21 +167,25 @@ const WorkoutItem1 = ({
           />
         )}
       </Card>
-      {/* {showEmptyCard && (
+      {selectedWorkout && showEmptyCard && (
         <Card className="card">
-          {workout.status === "close" && closedCard}
-          {workout.status === "check" && checkedCard}
-          {isCheckedCard ? checkedCard : null}
-          {isClosedCard ? closedCard : null}
-          {workout.label && existCard}
-          {!workout.label && !isFormOpen && emptyCard}
-          {isFormOpen && (
-            <WeekForm1 day={day} handleUpdateWorkout={handleUpdateWorkout} />
-          )}
+          {emptyCard}
+          <CardContent className="card-button">
+            <Button
+              variant="outlined"
+              onClick={() => {
+                setSelectedWorkout("");
+                setIsFormOpen(true);
+              }}
+              sx={{ fontSize: "20px", height: "60px", width: "60px" }}
+            >
+              +
+            </Button>
+          </CardContent>
         </Card>
-      )} */}
+      )}
     </Box>
   );
 };
 
-export default WorkoutItem1;
+export default WorkoutItem;

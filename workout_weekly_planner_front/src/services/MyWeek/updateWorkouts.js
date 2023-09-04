@@ -2,20 +2,18 @@ import { API_BASE_URL, API_ENDPOINTS } from "../apiConfing";
 
 export const updateWorkouts = async ({ weekNumber, userEmail, days }) => {
   if (weekNumber > 0 && userEmail && days.length > 0) {
-    console.log("the object that passed:", days);
     try {
       const formattedDays = days.map(({ dayOfWeek, workout }) => ({
         dayOfWeek,
         workout: workout
           ? {
               label: workout.label,
-              time: workout.time,
+              // time: workout.time,
               status: workout.status,
-              duration: "0",
+              duration: workout.duration,
             }
           : null,
       }));
-      console.log("format:", formattedDays);
 
       const response = await fetch(
         `${API_BASE_URL}${API_ENDPOINTS.week.updateWorkouts}`,

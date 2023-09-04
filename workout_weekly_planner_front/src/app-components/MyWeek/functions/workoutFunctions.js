@@ -7,12 +7,9 @@ export const handleWorkoutChange = (
   setSelectedWorkout
 ) => {
   const selectedWorkout = event.target.value;
-  console.log("sel", selectedWorkout);
   if (selectedWorkout) {
-    console.log("here?");
     setWorkout(selectedWorkout);
     updateSelectedCount();
-    console.log("selectefworkout:", selectedWorkout);
     handleUpdateWorkout(day, selectedWorkout);
     setSelectedWorkout(selectedWorkout);
   }

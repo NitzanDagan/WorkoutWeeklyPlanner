@@ -5,7 +5,7 @@ export const checkAndSaveWeekData = async (userEmail, userName, weekNumber) => {
     const fetchData = async () => {
       try {
         const response = await fetch(
-          `${API_BASE_URL}${API_ENDPOINTS.week.fetchWeekData}?userEmail=${userEmail}&weekNumber=${weekNumber}`
+          `${API_BASE_URL}${API_ENDPOINTS.week.getWeekData}?userEmail=${userEmail}&weekNumber=${weekNumber}`
         );
         if (response.ok) {
           const data = await response.json();
@@ -16,11 +16,12 @@ export const checkAndSaveWeekData = async (userEmail, userName, weekNumber) => {
           );
           return dataExists;
         } else {
-          const errorData = await response.json();
-          return errorData;
+          console.error("Error fetching data:", response.status);
+          return false;
         }
       } catch (error) {
-        console.error(error);
+        console.error("Error fetching data:", error);
+        return false;
       }
     };
 
@@ -53,6 +54,7 @@ export const checkAndSaveWeekData = async (userEmail, userName, weekNumber) => {
     };
 
     const dataExists = await fetchData();
+    console.log(dataExists);
 
     if (weekNumber > 0 && userEmail && !dataExists) {
       console.log("Data not found. Saving new data...");
